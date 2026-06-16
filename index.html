@@ -66,32 +66,35 @@
                 <!-- Seção Central (Imagens) -->
                 <div class="template-center">
                     <div class="images-container">
-                        <div class="image-slot" id="slot1">
-                            <input type="file" class="image-input" onchange="loadImage(1, event)">
+                        <label for="fileInput1" class="image-slot" id="slot1">
+                            <input type="file" id="fileInput1" class="image-input" onchange="loadImage(1, event)" accept="image/*">
                             <div class="image-placeholder">
                                 <i class="fas fa-image"></i>
                                 <p>Imagem 1</p>
+                                <small>Clique para selecionar</small>
                             </div>
                             <img id="img1" class="image-display" style="display: none;">
-                        </div>
+                        </label>
 
-                        <div class="image-slot" id="slot2">
-                            <input type="file" class="image-input" onchange="loadImage(2, event)">
+                        <label for="fileInput2" class="image-slot" id="slot2">
+                            <input type="file" id="fileInput2" class="image-input" onchange="loadImage(2, event)" accept="image/*">
                             <div class="image-placeholder">
                                 <i class="fas fa-image"></i>
                                 <p>Imagem 2</p>
+                                <small>Clique para selecionar</small>
                             </div>
                             <img id="img2" class="image-display" style="display: none;">
-                        </div>
+                        </label>
 
-                        <div class="image-slot" id="slot3" style="display: none;">
-                            <input type="file" class="image-input" onchange="loadImage(3, event)">
+                        <label for="fileInput3" class="image-slot" id="slot3" style="display: none;">
+                            <input type="file" id="fileInput3" class="image-input" onchange="loadImage(3, event)" accept="image/*">
                             <div class="image-placeholder">
                                 <i class="fas fa-image"></i>
                                 <p>Imagem 3</p>
+                                <small>Clique para selecionar</small>
                             </div>
                             <img id="img3" class="image-display" style="display: none;">
-                        </div>
+                        </label>
                     </div>
                     <button class="btn-add-image" onclick="toggleImageSlot()">+ Adicionar Imagem</button>
                 </div>
