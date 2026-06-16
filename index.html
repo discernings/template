@@ -1,204 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moderation Evidence Template</title>
+    <title>Moderation Template - Dinâmico</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1>🛡️ Moderation Evidence Template</h1>
-            <button class="settings-btn" id="settingsBtn">
-                <i class="fas fa-cog"></i> Settings
-            </button>
+    <div class="app-container">
+        <!-- Header com controles -->
+        <header class="app-header">
+            <h1>🛡️ Template de Moderação</h1>
+            <div class="header-controls">
+                <button class="btn-settings" id="settingsBtn">
+                    <i class="fas fa-palette"></i> Cores
+                </button>
+                <button class="btn-export" onclick="downloadTemplate()">
+                    <i class="fas fa-download"></i> Baixar JPEG
+                </button>
+            </div>
         </header>
 
         <!-- Settings Modal -->
         <div id="settingsModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Customize Colors</h2>
-                <div class="color-settings">
-                    <div class="color-group">
-                        <label for="primaryColor">Primary Color:</label>
-                        <input type="color" id="primaryColor" value="#3498db">
+                <h2>Personalizar Cores</h2>
+                <div class="color-grid">
+                    <div class="color-input">
+                        <label>Cor Primária:</label>
+                        <input type="color" id="colorPrimary" value="#3498db">
                     </div>
-                    <div class="color-group">
-                        <label for="secondaryColor">Secondary Color:</label>
-                        <input type="color" id="secondaryColor" value="#2ecc71">
+                    <div class="color-input">
+                        <label>Cor Background:</label>
+                        <input type="color" id="colorBg" value="#ffffff">
                     </div>
-                    <div class="color-group">
-                        <label for="accentColor">Accent Color:</label>
-                        <input type="color" id="accentColor" value="#e74c3c">
+                    <div class="color-input">
+                        <label>Cor Context:</label>
+                        <input type="color" id="colorContext" value="#e8f4f8">
                     </div>
-                    <div class="color-group">
-                        <label for="bgColor">Background Color:</label>
-                        <input type="color" id="bgColor" value="#ecf0f1">
+                    <div class="color-input">
+                        <label>Cor Replies:</label>
+                        <input type="color" id="colorReplies" value="#f8e8e8">
                     </div>
                 </div>
-                <button class="reset-btn" id="resetColors">Reset to Default</button>
+                <button class="btn-reset" id="resetColors">Restaurar Padrão</button>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Evidence Header -->
-            <section class="evidence-header">
-                <div class="header-inputs">
-                    <input type="text" id="caseId" placeholder="Case ID" class="input-field">
-                    <input type="text" id="reportedUser" placeholder="Reported User" class="input-field">
-                    <input type="date" id="incidentDate" class="input-field">
+        <!-- Template Container -->
+        <div class="template-wrapper">
+            <div id="templateCanvas" class="template-canvas">
+                
+                <!-- Seção Context (Esquerda) -->
+                <div class="template-section context-section">
+                    <div class="section-label">CONTEXTO</div>
+                    <div class="arrow-left">←</div>
+                    <div class="section-content">
+                        <textarea id="contextInput" placeholder="Escreva o contexto aqui..." class="textarea-input"></textarea>
+                    </div>
                 </div>
-            </section>
 
-            <!-- Image Windows -->
-            <section class="image-gallery">
-                <h2>Evidence Images <span class="window-count">(2-3 Windows)</span></h2>
-                <div class="image-windows">
-                    <div class="image-window" id="imgWindow1">
-                        <div class="window-header">
-                            <span>Image 1</span>
-                            <button class="remove-btn" onclick="removeWindow(1)">×</button>
-                        </div>
-                        <div class="image-container">
+                <!-- Seção Central (Imagens) -->
+                <div class="template-center">
+                    <div class="images-container">
+                        <div class="image-slot" id="slot1">
                             <input type="file" class="image-input" onchange="loadImage(1, event)">
-                            <div class="image-placeholder" id="imgPlaceholder1">
+                            <div class="image-placeholder">
                                 <i class="fas fa-image"></i>
-                                <p>Click to upload image</p>
+                                <p>Imagem 1</p>
                             </div>
                             <img id="img1" class="image-display" style="display: none;">
                         </div>
-                        <div class="image-controls">
-                            <button class="btn-small" onclick="zoomImage(1, 1.1)">
-                                <i class="fas fa-search-plus"></i>
-                            </button>
-                            <button class="btn-small" onclick="zoomImage(1, 0.9)">
-                                <i class="fas fa-search-minus"></i>
-                            </button>
-                            <button class="btn-small" onclick="downloadImage(1)">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
 
-                    <div class="image-window" id="imgWindow2">
-                        <div class="window-header">
-                            <span>Image 2</span>
-                            <button class="remove-btn" onclick="removeWindow(2)">×</button>
-                        </div>
-                        <div class="image-container">
+                        <div class="image-slot" id="slot2">
                             <input type="file" class="image-input" onchange="loadImage(2, event)">
-                            <div class="image-placeholder" id="imgPlaceholder2">
+                            <div class="image-placeholder">
                                 <i class="fas fa-image"></i>
-                                <p>Click to upload image</p>
+                                <p>Imagem 2</p>
                             </div>
                             <img id="img2" class="image-display" style="display: none;">
                         </div>
-                        <div class="image-controls">
-                            <button class="btn-small" onclick="zoomImage(2, 1.1)">
-                                <i class="fas fa-search-plus"></i>
-                            </button>
-                            <button class="btn-small" onclick="zoomImage(2, 0.9)">
-                                <i class="fas fa-search-minus"></i>
-                            </button>
-                            <button class="btn-small" onclick="downloadImage(2)">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
 
-                    <div class="image-window" id="imgWindow3" style="display: none;">
-                        <div class="window-header">
-                            <span>Image 3</span>
-                            <button class="remove-btn" onclick="removeWindow(3)">×</button>
-                        </div>
-                        <div class="image-container">
+                        <div class="image-slot" id="slot3" style="display: none;">
                             <input type="file" class="image-input" onchange="loadImage(3, event)">
-                            <div class="image-placeholder" id="imgPlaceholder3">
+                            <div class="image-placeholder">
                                 <i class="fas fa-image"></i>
-                                <p>Click to upload image</p>
+                                <p>Imagem 3</p>
                             </div>
                             <img id="img3" class="image-display" style="display: none;">
                         </div>
-                        <div class="image-controls">
-                            <button class="btn-small" onclick="zoomImage(3, 1.1)">
-                                <i class="fas fa-search-plus"></i>
-                            </button>
-                            <button class="btn-small" onclick="zoomImage(3, 0.9)">
-                                <i class="fas fa-search-minus"></i>
-                            </button>
-                            <button class="btn-small" onclick="downloadImage(3)">
-                                <i class="fas fa-download"></i>
+                    </div>
+                    <button class="btn-add-image" onclick="toggleImageSlot()">+ Adicionar Imagem</button>
+                </div>
+
+                <!-- Seção Replies (Direita) -->
+                <div class="template-section replies-section">
+                    <div class="section-label">RESPOSTAS</div>
+                    <div class="arrow-right">→</div>
+                    <div class="section-content">
+                        <div class="replies-input">
+                            <input type="text" id="replyUser" placeholder="Usuário..." class="input-reply">
+                            <textarea id="replyContent" placeholder="Resposta..." class="textarea-reply"></textarea>
+                            <button class="btn-add-reply" onclick="addReply()">
+                                <i class="fas fa-plus"></i> Adicionar
                             </button>
                         </div>
+                        <div id="repliesList" class="replies-list"></div>
                     </div>
                 </div>
-                <button class="add-window-btn" id="addWindowBtn" onclick="addWindow()">
-                    <i class="fas fa-plus"></i> Add Image Window
-                </button>
-            </section>
 
-            <!-- Context Section -->
-            <section class="collapsible-section">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <i class="fas fa-chevron-down arrow"></i>
-                    <h2>📋 Context</h2>
-                </div>
-                <div class="section-content">
-                    <textarea id="contextText" placeholder="Enter context details about the incident..." class="textarea-field"></textarea>
-                    <div class="section-stats">
-                        <span id="contextCount">0</span> characters
-                    </div>
-                </div>
-            </section>
+            </div>
+        </div>
 
-            <!-- Replies Section -->
-            <section class="collapsible-section">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <i class="fas fa-chevron-down arrow"></i>
-                    <h2>💬 Replies</h2>
-                </div>
-                <div class="section-content">
-                    <div class="add-reply-controls">
-                        <input type="text" id="replyUserInput" placeholder="User name" class="input-field">
-                        <textarea id="replyContentInput" placeholder="Reply content..." class="textarea-field"></textarea>
-                        <button class="btn-primary" onclick="addReply()">
-                            <i class="fas fa-plus"></i> Add Reply
-                        </button>
-                    </div>
-                    <div id="repliesList" class="replies-list"></div>
-                </div>
-            </section>
-
-            <!-- Export Section -->
-            <section class="export-section">
-                <h2>📤 Export Evidence</h2>
-                <div class="export-buttons">
-                    <button class="btn-export" onclick="exportJSON()">
-                        <i class="fas fa-file-code"></i> Export as JSON
-                    </button>
-                    <button class="btn-export" onclick="exportHTML()">
-                        <i class="fas fa-file-html5"></i> Export as HTML
-                    </button>
-                    <button class="btn-export" onclick="clearAll()">
-                        <i class="fas fa-trash"></i> Clear All
-                    </button>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Image Viewer Modal -->
-    <div id="imageViewerModal" class="modal">
-        <span class="close" onclick="closeImageViewer()">&times;</span>
-        <img class="modal-image" id="modalImage">
-        <div class="modal-controls">
-            <button onclick="rotateImage()"><i class="fas fa-redo"></i> Rotate</button>
-            <button onclick="toggleFullscreen()"><i class="fas fa-expand"></i> Fullscreen</button>
+        <!-- Toolbar abaixo do template -->
+        <div class="toolbar">
+            <button class="btn-toolbar" onclick="clearAll()">
+                <i class="fas fa-trash"></i> Limpar Tudo
+            </button>
+            <button class="btn-toolbar" onclick="downloadTemplate()">
+                <i class="fas fa-download"></i> Baixar JPEG
+            </button>
+            <button class="btn-toolbar" onclick="downloadTemplatePNG()">
+                <i class="fas fa-download"></i> Baixar PNG
+            </button>
         </div>
     </div>
 
